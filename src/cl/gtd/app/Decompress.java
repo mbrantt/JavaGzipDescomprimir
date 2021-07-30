@@ -19,7 +19,7 @@ import org.apache.commons.compress.utils.IOUtils;
 
 public class Decompress {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
 		String compressedText = "H4sICFo85mAAA1hNTF85OTlfMjAyMS0wNy0wN18yMmgzN18xOF9VVEMucHJpAOydWVfbSBaA3/Mr\r\n"
 				+ "fHidE6h9ySHMCGMn9BBIB+ienpccIwnbeKNlEez59VMlW17A2FfCsuUlp5sE6ZaWUqnup7vV8T97\r\n"
@@ -175,34 +175,17 @@ public class Decompress {
 				+ "m6b4QmuQuxS/t/MCpnhgB20WC0zxgA7aE80L/dTt/Zo+YH9bjAffv5uUdrUvtb37Hj9GHvm/Mpfx\r\n"
 				+ "f5fp8dZ2Jfuz+XF93Xzt22xqns7tZ+yugh8+9bd/fF5924x/iHrwOfs4n//C0v+7+j8zX2CwxwIC\r\n"
 				+ "AA==";
-		
-		
-		    
-	            
-	        	
-	        	
-                try {
-					byte[] tt = Decodificar(compressedText);
-					String archivo = gzipDecompress(tt);
-					
-					System.out.println(archivo);
-			        
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-                //String sss = gzipDecompress(Archive);
-                //String Arochivo = gzipDecompress(Archive);
-                //String Archivo = gzipDecompress2(Archive);
-                //System.out.println(Archivo);
-                //String ArchivoCodificado = Codificar(Archivo);
-                //System.out.println(ArchivoCodificado);
-	        
-	       //System.out.println(uncompressed);
-
-
+		String archivo = gzipDecompress(compressedText);
+		System.out.println(archivo);
 	}
 	
+	public static final String gzipDecompress(String compressedText) throws IOException {
+		byte[] compressed = Decodificar(compressedText);
+	    ByteArrayInputStream bis = new ByteArrayInputStream(compressed);
+	    GZIPInputStream gis = new GZIPInputStream(bis);
+	    byte [] bytes = IOUtils.toByteArray(gis);
+	    return Base64.getEncoder().encodeToString(bytes);
+	}
 	
 	private static String Codificar(String XML) throws IOException{
 		
@@ -222,86 +205,7 @@ public class Decompress {
 		
 	}
 	
-	public static final String gzipDecompress(byte[] compressed) throws IOException {
-	    ByteArrayInputStream bis = new ByteArrayInputStream(compressed);
-	    GZIPInputStream gis = new GZIPInputStream(bis);
-	    byte [] bytes = IOUtils.toByteArray(gis);
-		String encoded = Base64.getEncoder().encodeToString(bytes);
-	    return encoded;//new String(bytes, StandardCharsets.UTF_8);
-	}
-	
-	public static final String gzipDecompress2(byte[] compressed) throws IOException {
-	
-       ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(compressed);
-       GZIPInputStream gzipInputStream = new GZIPInputStream(byteArrayInputStream, 131783);
-       
-       
-       InputStreamReader reader = new InputStreamReader(gzipInputStream,StandardCharsets.UTF_8);
-       
-      
-       
-       BufferedReader in = new BufferedReader(reader);
-      
-      
-       StringBuilder output = new StringBuilder();
-       String readed = null;
-       
-       while ((readed = in.readLine()) != null) {
-    	   
-    	   output.append(readed).append("\r\n");   	   
-    	   readed = in.readLine();
-    	   
-            
-       }
-       String xml2String = output.toString();
-       
-       
-       byteArrayInputStream.close();
-       gzipInputStream.close();
-       return xml2String;
-		
-	}
-	
-	
-	
-	
-	
-	private static String deCompress(String str)
-	{
-	String s1 = null;
-	str = str.replaceAll("\\s+","");
-	try
-	{
-	byte b[] = str.getBytes("utf-8");
-	 Base64.Decoder d = Base64.getDecoder();
-     b = d.decode(b);
-	
-	InputStream bais = new ByteArrayInputStream(b);
-	GZIPInputStream gs = new GZIPInputStream(bais, 131783);
-	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	int numBytesRead = 0;
-	byte [] tempBytes = new byte[131783];
-	try
-	{
-	while ((numBytesRead = gs.read(tempBytes, 0, tempBytes.length)) != -1)
-	{
-	baos.write(tempBytes, 0, numBytesRead);
-	}
 
-	s1 = new String(baos.toByteArray());
-	s1= baos.toString();
-	}
-	catch(ZipException e)
-	{
-	e.printStackTrace();
-	}
-	}
-	catch(Exception e) {
-	e.printStackTrace();
-	}
-	return s1;
-	}
-	
 }
 
 
