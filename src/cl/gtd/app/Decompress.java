@@ -1,19 +1,9 @@
 package cl.gtd.app;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Base64;
-import java.util.stream.Stream;
 import java.util.zip.GZIPInputStream;
-import java.util.zip.Inflater;
-import java.util.zip.ZipException;
 
 import org.apache.commons.compress.utils.IOUtils;
 
@@ -180,14 +170,14 @@ public class Decompress {
 	}
 	
 	public static final String gzipDecompress(String compressedText) throws IOException {
-		byte[] compressed = Decodificar(compressedText);
+		byte[] compressed = decodificar(compressedText);
 	    ByteArrayInputStream bis = new ByteArrayInputStream(compressed);
 	    GZIPInputStream gis = new GZIPInputStream(bis);
 	    byte [] bytes = IOUtils.toByteArray(gis);
 	    return Base64.getEncoder().encodeToString(bytes);
 	}
 	
-	private static String Codificar(String XML) throws IOException{
+	private static String codificar(String XML) throws IOException{
 		
 		//Codificar
 		
@@ -196,7 +186,7 @@ public class Decompress {
 		return Codificacion ;
 	}
 	
-	private static byte[] Decodificar(String XML) throws IOException{
+	private static byte[] decodificar(String XML) throws IOException{
 		
 		XML = XML.replaceAll("\\s+","");
 		byte[] decodedBytes = Base64.getDecoder().decode(XML);
@@ -205,7 +195,6 @@ public class Decompress {
 		
 	}
 	
-
 }
 
 
