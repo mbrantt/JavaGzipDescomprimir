@@ -183,7 +183,8 @@ public class Decompress {
 	        	
                 try {
 					byte[] tt = Decodificar(compressedText);
-					String archivo = gzipDecompress2(tt);
+					String archivo = gzipDecompress(tt);
+					
 					System.out.println(archivo);
 			        
 				} catch (IOException e) {
@@ -216,7 +217,7 @@ public class Decompress {
 		
 		XML = XML.replaceAll("\\s+","");
 		byte[] decodedBytes = Base64.getDecoder().decode(XML);
-		String decodedString = new String(decodedBytes);
+		//String decodedString = new String(decodedBytes);
 		return decodedBytes;
 		
 	}
@@ -224,9 +225,9 @@ public class Decompress {
 	public static final String gzipDecompress(byte[] compressed) throws IOException {
 	    ByteArrayInputStream bis = new ByteArrayInputStream(compressed);
 	    GZIPInputStream gis = new GZIPInputStream(bis);
-	    byte [] bytes = new byte[131783];
-	    bytes = IOUtils.toByteArray(gis);
-	    return new String(bytes, StandardCharsets.UTF_8);
+	    byte [] bytes = IOUtils.toByteArray(gis);
+		String encoded = Base64.getEncoder().encodeToString(bytes);
+	    return encoded;//new String(bytes, StandardCharsets.UTF_8);
 	}
 	
 	public static final String gzipDecompress2(byte[] compressed) throws IOException {
